@@ -40,5 +40,8 @@ do
 		"Go back")
 			echo "Going back"
 			;;
-
-
+		*)
+			echo "Invalid option"
+			;;
+	esac
+done
