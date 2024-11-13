@@ -33,14 +33,14 @@ echo "User Management"
 ;;
     6)
 echo "File Management"
+	./fileMgmt.sh
 ;;
     7)
 echo "Thank you for using our computer management program!"
-break
+exit 1
 ;;
     *)
 echo "Invalid option"
 ;;
 esac
-}
-}
+

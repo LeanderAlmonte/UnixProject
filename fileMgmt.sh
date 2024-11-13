@@ -21,27 +21,32 @@ fi
 
 
 echo "File Management"
-
-select option in "Search For User Specified File" "Display 10 largest files" "Display 10 oldest files" "Send email" "Go back";
-do
-	case $option in
-		"Search For User Specified File")
-			searchUserSpecifiedFile
-			;;
-		"Display 10 largest files")
-			echo "Displaying largest files"
-			;;
-		"Display 10 oldest files")
-			echo "Displaying oldest files"
-			;;
-		"Send email")
-			echo "Sending email"
-			;;
-		"Go back")
-			echo "Going back"
-			;;
-		*)
-			echo "Invalid option"
-			;;
+displayingMenu() {
+echo -e "\033[1m1. Search for specific file in a user's home directory\033[0m"
+echo -e "\033[1m2. Display 10 largest files in a user's home directory\033[0m"
+echo -e "\033[1m3. Display 10 oldest files in the user's home directory\033[0m"
+echo -e "\033[1m4. Send file by email\033[0m"
+echo -e "\033[1m5. Go back\033[0m"
+read -p "Please select an option : " option
+}
+displayingMenu
+case $option in
+	1)
+		searchUserSpecifiedFile
+		;;
+	2)
+		echo "10 largest"
+		;;
+	3)
+		echo "10 oldest"
+		;;
+	4)
+		echo "Sending email"
+		;;
+	5)
+		echo "Going back"
+		;;
+	*)
+		echo "Invalid option"
+		;;
 	esac
-done
