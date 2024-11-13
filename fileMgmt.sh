@@ -17,6 +17,14 @@ if id "$username" &>/dev/null; then
 fi
 }
 
+display10LargestFiles() {
+du -ah $HOME | sort -rh | head -n 10
+}
+
+display10OldestFiles() {
+find -type f -printf '%T+ %p\n' | sort | head -n 10
+}
+
 
 
 
@@ -35,10 +43,10 @@ case $option in
 		searchUserSpecifiedFile
 		;;
 	2)
-		echo "10 largest"
+		display10LargestFiles
 		;;
 	3)
-		echo "10 oldest"
+		display10OldestFiles
 		;;
 	4)
 		echo "Sending email"
