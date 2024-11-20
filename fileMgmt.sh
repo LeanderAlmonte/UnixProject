@@ -22,10 +22,34 @@ du -ah $HOME | sort -rh | head -n 10
 }
 
 display10OldestFiles() {
-find -type f -printf '%T+ %p\n' | sort | head -n 10
+find $HOME -type f -printf '%T+ %p\n' | sort | head -n 10
 }
 
+sendEmail() {
 
+regex="^(([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+|(\"([][,:;<>\&@a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~-]|(\\\\[\\ \"]))+\"))\.)*([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+|(\"([][,:;<>\&@a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~-]|(\\\\[\\ \"]))+\"))@\w((-|\w)*\w)*\.(\w((-|\w)*\w)*\.)*\w{2,4}$"
+
+echo "Enter file to send"
+read file
+
+if test -f "$file"; then
+	echo "Enter recipient email"
+	read email
+		if [[ $email =~ $regex ]]; then
+			echo "Enter email subject"
+			read subject
+			echo "Enter email message"
+			read body
+
+			echo "$body" | mail -s "%subject" "$email" -A "$file"
+			echo "Email sent successfully"
+		else
+			echo "Invalid Email"
+		fi
+else
+	echo "Invalid File"
+fi
+}
 
 
 echo "File Management"
@@ -49,7 +73,7 @@ case $option in
 		display10OldestFiles
 		;;
 	4)
-		echo "Sending email"
+		sendEmail
 		;;
 	5)
 		echo "Going back"
