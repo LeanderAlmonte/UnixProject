@@ -68,6 +68,7 @@ echo -e "\033[1m 2.        Give root permission to a user         \033[0m"
 echo -e "\033[1m 3.     Show list of currently connected users    \033[0m"
 echo -e "\033[1m 4.       Disconnect a specific remote user       \033[0m"
 echo -e "\033[1m 5. Show the list of groups a user is a member of \033[0m"
+echo -e "\033[1m Loading...\033[0m" | sed  -e :a -e "s/^.\{1,$(tput cols)\}$/ & /;ta"
 echo -e "\033[1m 6.             Change a user's group             \033[0m"
 echo -e "\033[1m 7.                    Go back                    \033[0m"
 }
@@ -77,7 +78,7 @@ clear
 echo
 echo -e "\033[1m 1.  Add a user   \033[0m"
 echo -e "\033[1m 2. Delete a user \033[0m"
-echo -e "\033[1m 7.    Go back    \033[0m"
+echo -e "\033[1m 3.    Go back    \033[0m"
 }
 
 displayingFileManagementMenu() {
@@ -238,7 +239,7 @@ read -p "Please select an option: " option
                 ;;
             6)
                  echo -e "\033[1m Loading...\033[0m" | sed  -e :a -e "s/^.\{1,$(tput cols)\}$/ & /;ta"
-           	 sleep 0.5
+temp1:        +27.3°C            	 sleep 0.5
 	   	 changeUserGroup | sed  -e :a -e "s/^.\{1,$(tput cols)\}$/ & /;ta"
            	 read -p "Press any key to return to the User Management menu..." -n 1 -s
            	 clear
@@ -645,8 +646,8 @@ main() {
             UserManagementMenuOption
             ;;
         6)
-            echo "Manage Files"
-            read -p "Press any key to return to the main menu..." -n 1 -s
+	    echo -e "\033[1m Loading...\033[0m" | sed  -e :a -e "s/^.\{1,$(tput cols)\}$/ & /;ta"
+            sleep 0.5
             displayingFileManagementMenu | sed  -e :a -e "s/^.\{1,$(tput cols)\}$/ & /;ta"
             fileManagementMenuOption
             ;;
