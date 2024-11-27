@@ -29,6 +29,9 @@ done
 }
 
 handlingNetworkCards() {
+
+listNetworkCards
+
 echo "Enter network card"
 
 read network
@@ -44,6 +47,28 @@ if ip link show "$network" &/dev/null; then
 else
 		echo "Invalid Network Card"
 fi
+}
+
+setIPofNetworkCard() {
+echo "Enter a valid IP address: "
+
+read ip
+
+regex="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
+
+	if [[ "$ip" =~ $regex ]]; then
+
+		listNetworkCards
+
+		echo "Enter NIC-Name: "
+		read nicName
+
+		sudo ifconfig $nicName $ip
+
+		echo "Successfully changed IP Address of $nicName to $ip"
+	else
+		"Invalid IP address"
+	fi
 }
 
 echo "Network"
@@ -64,7 +89,7 @@ case $option in
                 handlingNetworkCards
                 ;;
         3)
-                echo "Setting IP address"
+                setIPofNetworkCard
                 ;;
         4)
                 echo "Connecting to Wi-Fi"
