@@ -30,20 +30,28 @@ done
 
 handlingNetworkCards() {
 
-listNetworkCards
+echo "List of Network Cards: "
 
-echo "Enter network card"
+for interface in $(ip link show | awk -F': ' '{print $2}' | grep -v 'lo'); do
+    if ip link show "$interface" | grep -q "state UP"; then
+        echo "$interface is UP (enabled)"
+    else
+        echo "$interface is DOWN (disabled)"
+    fi
+done
+
+echo "Enter network card to enable or disable: "
 
 read network
 
 if ip link show "$network" &/dev/null; then
-	echo "Enable or Disable: "
-	read handle
-		if [[ "$handle" == "Enable" ]]; then
-			sudo ip link set $network up
-		else
-			sudo ip link set $network down
-		fi
+	if ip link show "$network" | grep -q "state UP"; then
+		echo "$network has been disabled. "
+		sudo ip link set $network down
+	else
+		echo "$network has been enabled. "
+		sudo ip link set $network up
+	fi
 else
 		echo "Invalid Network Card"
 fi
@@ -58,17 +66,32 @@ regex="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
 
 	if [[ "$ip" =~ $regex ]]; then
 
-		listNetworkCards
+		for i in ${ip//./ }; do
+			[[ "${#i}" -gt 1 && "${i:0:1}" == 0 ]] && { echo "Invalid IP Address: Integer may not begin with zero if it has more than one digit"; return 1; }
+			[[ "$i" -gt 255 ]] && { echo "Invalid IP Address: Integer cannot be greater than 255"
+		done
 
-		echo "Enter NIC-Name: "
-		read nicName
+		echo ""
 
-		sudo ifconfig $nicName $ip
+		echo "List of Network Cards: "
+
+		for interface in $(ip link show | awk -F': ' '{print $2}' | grep -v 'lo'); do
+			echo "$interface"
+		done
+
+		echo "Enter network card (ethX wlanX): "
+		read netCard
+
+		sudo ifconfig $netCard $ip
 
 		echo "Successfully changed IP Address of $nicName to $ip"
 	else
 		"Invalid IP address"
 	fi
+}
+
+connectToWiFi() {
+
 }
 
 echo "Network"
