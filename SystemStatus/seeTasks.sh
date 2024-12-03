@@ -13,6 +13,8 @@ do
 	kill -l
 	;;
 	"Kill Task")
+ 	ps aux
+  	kill -l
 	echo "Enter the Kill Option number you want to perform"
 	read killnum
 	echo "Enter the PID of the task that you wish to kill"
