@@ -90,8 +90,45 @@ regex="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
 	fi
 }
 
-connectToWiFi() {
+list_networks() {
+    echo "Scanning for wireless networks..."
+    nmcli device wifi rescan
+    echo
+    nmcli -f SSID,SIGNAL,SECURITY device wifi list
+}
 
+connect_to_network() {
+    read -p "Enter the SSID of the network you want to connect to: " ssid
+    read -s -p "Enter the password for $ssid (leave empty if open network): " password
+    echo
+
+    if [ -z "$password" ]; then
+        nmcli device wifi connect "$ssid"
+    else
+        nmcli device wifi connect "$ssid" password "$password"
+    fi
+
+    if [ $? -eq 0 ]; then
+        echo "Successfully connected to $ssid."
+    else
+        echo "Failed to connect to $ssid."
+    fi
+}
+
+connectToWifi(){
+while true; do
+    echo "1. List available wireless networks"
+    echo "2. Connect to a wireless network"
+    echo "3. Exit"
+    read -p "Choose an option: " choice
+
+    case $choice in
+        1) list_networks ;;
+        2) connect_to_network ;;
+        3) echo "Goodbye!"; exit 0 ;;
+        *) echo "Invalid option. Please try again." ;;
+    esac
+done
 }
 
 echo "Network"
@@ -115,7 +152,7 @@ case $option in
                 setIPofNetworkCard
                 ;;
         4)
-                echo "Connecting to Wi-Fi"
+                connectToWifi
                 ;;
         5)
                 echo "Going back"

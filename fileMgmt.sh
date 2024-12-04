@@ -18,7 +18,7 @@ fi
 }
 
 display10LargestFiles() {
-du -ah $HOME | sort -rh | head -n 10
+find $HOME -type f -exec du -ah {} + | sort -rh | head -n 10
 }
 
 display10OldestFiles() {
