@@ -386,6 +386,34 @@ networksMenuOption() {
     done
 }
 
+listNetworkCards() {
+
+echo "---------------------------------"
+
+echo "Network Card, IP address, Default Gateway: "
+
+for iface in $(ip link show | awk -F': ' '{print $2}' | grep -v lo); do
+
+    ip_address=$(ip addr show $iface | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)
+
+    gateway=$(ip route show dev $iface | grep default | awk '{print $3}')
+
+    if [ -z "$ip_address" ]; then
+        continue
+    fi
+
+    echo "  Interface: $iface"
+    echo "  IP Address: $ip_address"
+    if [ -n "$gateway" ]; then
+        echo "  Default Gateway: $gateway"
+    else
+        echo "  No Default Gateway"
+    fi
+    echo "---------------------------------"
+done
+
+}
+
 # Handling Network Cards Function
 handlingNetworkCards() {
     clear

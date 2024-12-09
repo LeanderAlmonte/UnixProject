@@ -41,7 +41,7 @@ if test -f "$file"; then
 			echo "Enter email message"
 			read body
 
-			echo "$body" | mail -s "%subject" "$email" -A "$file"
+			echo "$body" | mail -s "$subject" -a "$file" "$email"
 			echo "Email sent successfully"
 		else
 			echo "Invalid Email"
