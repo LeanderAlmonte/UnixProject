@@ -220,14 +220,14 @@ backupOperation() {
            loadingAnimation
            backupCreater
            read -p "Press any key to return to the Backup Menu..." -n 1 -s
-           displayingNetworksMenu
+           backupDisplay
            backupOperation
            ;;
         2)
            loadingAnimation
-           InfoOfLastBackup
+           InfoOfLastBackUp
            read -p "Press any key to return to the Backup Menu..." -n 1 -s
-           displayingNetworksMenu
+           backupDisplay
            backupOperation
            ;;
         3)  
