@@ -353,6 +353,7 @@ networksMenuOption() {
         case $networkChoice in
         1)
            loadingAnimation
+	   clear
            listNetworkCards
            handlingNetworkCards
            read -p "Press any key to return to the Network Menu..." -n 1 -s
@@ -361,7 +362,7 @@ networksMenuOption() {
            ;;
         2)
            loadingAnimation
-           listNetworkCards
+	   clear
            setIPofNetworkCard
            read -p "Press any key to return to the Network menu..." -n 1 -s
            displayingNetworksMenu
@@ -369,7 +370,7 @@ networksMenuOption() {
            ;;
         3) 
            loadingAnimation
-           echo "working.."
+           connect_to_network
            read -p "Press any key to return to the Network menu..." -n 1 -s
            displayingNetworksMenu
            networksMenuOption
@@ -416,7 +417,6 @@ done
 
 # Handling Network Cards Function
 handlingNetworkCards() {
-    clear
     echo "Enter network card name (e.g., eth0, wlan0):"
     read network
 
@@ -438,7 +438,6 @@ handlingNetworkCards() {
 }
 
 setIPofNetworkCard() {
-clear
 echo "Current valid IP addresses:"
 ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | while read -r ip; do
         echo "- $ip"
@@ -476,6 +475,32 @@ regex="^([0-9]{1,3}\.){3}[0-9]{1,3}$"
         fi
     else
         echo "Invalid IP address format. Please try again."
+    fi
+}
+
+connect_to_network() {
+
+    echo "Scanning for wireless networks..."
+    nmcli device wifi rescan
+    echo
+    nmcli -f SSID,SIGNAL,SECURITY device wifi list
+
+    echo "====================================================="
+
+    read -p "Enter the SSID of the network you want to connect to: " ssid
+    read -s -p "Enter the password for $ssid (leave empty if open network): " password
+    echo
+
+    if [ -z "$password" ]; then
+        nmcli device wifi connect "$ssid"
+    else
+        nmcli device wifi connect "$ssid" password "$password"
+    fi
+
+    if [ $? -eq 0 ]; then
+        echo "Successfully connected to $ssid."
+    else
+        echo "Failed to connect to $ssid."
     fi
 }
 
