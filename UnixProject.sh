@@ -370,6 +370,7 @@ networksMenuOption() {
            ;;
         3) 
            loadingAnimation
+	   clear
            connect_to_network
            read -p "Press any key to return to the Network menu..." -n 1 -s
            displayingNetworksMenu
